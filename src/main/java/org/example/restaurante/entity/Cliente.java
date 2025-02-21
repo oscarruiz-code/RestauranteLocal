@@ -2,6 +2,11 @@ package org.example.restaurante.entity;
 
 import jakarta.persistence.*;
 
+/**
+ * Entidad que representa un cliente en la base de datos.
+ *
+ * @autor oscarruiz-code
+ */
 @Entity
 @Table(name = "cliente")
 public class Cliente {
@@ -20,15 +25,31 @@ public class Cliente {
     @Column(name = "telefono")
     private String telefono;
 
-    public Cliente() {}
+    public Cliente() {
+    }
 
+    /**
+     * Constructor con nombre del cliente.
+     *
+     * @param nombre El nombre del cliente.
+     */
+    public Cliente(String nombre) {
+        this.nombre = nombre;
+    }
+
+    /**
+     * Constructor con nombre, dirección y teléfono del cliente.
+     *
+     * @param nombre    El nombre del cliente.
+     * @param direccion La dirección del cliente.
+     * @param telefono  El teléfono del cliente.
+     */
     public Cliente(String nombre, String direccion, String telefono) {
         this.nombre = nombre;
         this.direccion = direccion;
         this.telefono = telefono;
     }
 
-    // Métodos getters y setters...
     public int getId() {
         return id;
     }
@@ -59,5 +80,12 @@ public class Cliente {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+
+    @Override
+    public String toString() {
+        return nombre;
+
     }
 }

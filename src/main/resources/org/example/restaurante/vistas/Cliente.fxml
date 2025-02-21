@@ -45,6 +45,10 @@
         <Button text="Buscar" onAction="#buscarCliente"/>
     </HBox>
 
+    <HBox spacing="10.0" alignment="CENTER">
+        <Button text="Volver a Principal" onAction="#volverPrincipal"/>
+    </HBox>
+
     <VBox.margin>
         <Insets top="20"/>
     </VBox.margin>

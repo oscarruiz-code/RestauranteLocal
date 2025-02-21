@@ -1,18 +1,40 @@
 CREATE DATABASE Restaurante;
-USE Restaurante;
 
+-- Tabla Cliente
 CREATE TABLE Cliente (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL,
-    direccion VARCHAR(100) NOT NULL,
-    telefono VARCHAR(15) NOT NULL
+    nombre VARCHAR(255) NOT NULL,
+    direccion VARCHAR(255),
+    telefono VARCHAR(255)
 );
 
-INSERT INTO Cliente (nombre, direccion, telefono) VALUES
-('Juan Pérez', 'Calle Falsa 123, Sevilla', '600123456'),
-('María Gómez', 'Avenida Siempre Viva 456, Sevilla', '600234567'),
-('Pedro Martínez', 'Plaza Mayor 789, Sevilla', '600345678'),
-('Laura Sánchez', 'Calle del Río 1011, Sevilla', '600456789'),
-('José Rodríguez', 'Avenida del Sol 1213, Sevilla', '600567890'),
-('Ana López', 'Calle Luna 1415, Sevilla', '600678901'),
-('Luis Fernández', 'Calle del Parque 1617, Sevilla', '600789012'
+-- Tabla Producto
+CREATE TABLE Producto (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL,
+    categoria VARCHAR(255),
+    precio DOUBLE NOT NULL,
+    disponibilidad BOOLEAN NOT NULL
+);
+
+-- Tabla Pedido
+CREATE TABLE Pedido (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    cliente_id INT,
+    fecha VARCHAR(255) NOT NULL,
+    hora VARCHAR(255) NOT NULL,
+    total DOUBLE,
+    estado VARCHAR(255) NOT NULL,
+    FOREIGN KEY (cliente_id) REFERENCES Cliente(id)
+);
+
+-- Tabla DetallePedido
+CREATE TABLE DetallePedido (
+    id_detallePedido BIGINT AUTO_INCREMENT PRIMARY KEY,
+    pedido_id BIGINT,
+    producto_id INT NOT NULL,
+    cantidad INT NOT NULL,
+    precio DOUBLE NOT NULL,
+    subtotal DOUBLE,
+    FOREIGN KEY (pedido_id) REFERENCES Pedido(id)
+);

@@ -2,6 +2,11 @@ package org.example.restaurante.entity;
 
 import jakarta.persistence.*;
 
+/**
+ * Entidad que representa un producto en la base de datos.
+ *
+ * @autor oscarruiz-code
+ */
 @Entity
 @Table(name = "producto")
 public class Producto {
@@ -23,31 +28,29 @@ public class Producto {
     @Column(name = "disponibilidad")
     private boolean disponibilidad;
 
+    /**
+     * Constructor con los detalles del producto.
+     *
+     * @param nombre El nombre del producto.
+     * @param categoria La categoría del producto.
+     * @param precio El precio del producto.
+     * @param disponibilidad La disponibilidad del producto.
+     */
     public Producto(String nombre, String categoria, double precio, boolean disponibilidad) {
-    }
-
-    public boolean isDisponibilidad() {
-        return disponibilidad;
-    }
-
-    public void setDisponibilidad(boolean disponibilidad) {
+        this.nombre = nombre;
+        this.categoria = categoria;
+        this.precio = precio;
         this.disponibilidad = disponibilidad;
     }
 
-    public double getPrecio() {
-        return precio;
+    public Producto() {}
+
+    public int getId() {
+        return id;
     }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {
@@ -58,11 +61,32 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public int getId() {
-        return id;
+    public String getCategoria() {
+        return categoria;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+    public boolean isDisponibilidad() {
+        return disponibilidad;
+    }
+
+    public void setDisponibilidad(boolean disponibilidad) {
+        this.disponibilidad = disponibilidad;
+    }
+
+    @Override
+    public String toString() {
+        return nombre;
     }
 }

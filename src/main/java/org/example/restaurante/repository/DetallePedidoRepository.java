@@ -7,16 +7,29 @@ import org.hibernate.cfg.Configuration;
 
 import java.util.List;
 
+/**
+ * Clase para manejar las operaciones relacionadas con los detalles de pedidos en la base de datos.
+ *
+ * @autor oscarruiz-code
+ */
 public class DetallePedidoRepository {
 
     private SessionFactory factory;
 
+    /**
+     * Constructor que inicializa el SessionFactory.
+     */
     public DetallePedidoRepository() {
         factory = new Configuration().configure("hibernate.cfg.xml")
                 .addAnnotatedClass(DetallePedido.class)
                 .buildSessionFactory();
     }
 
+    /**
+     * Guarda o actualiza un detalle de pedido en la base de datos.
+     *
+     * @param detallePedido El objeto DetallePedido a guardar o actualizar.
+     */
     public void guardarDetallePedido(DetallePedido detallePedido) {
         try (Session session = factory.openSession()) {
             session.beginTransaction();
@@ -25,41 +38,34 @@ public class DetallePedidoRepository {
         }
     }
 
-    public DetallePedido obtenerDetallePedidoPorId(int id) {
-        DetallePedido detallePedido = null;
+    /**
+     * Obtiene los detalles de un pedido por su ID.
+     *
+     * @param pedidoId El ID del pedido.
+     * @return Una lista de objetos DetallePedido que corresponden al pedido.
+     */
+    public List<DetallePedido> obtenerDetallesPorPedido(Long pedidoId) {
         try (Session session = factory.openSession()) {
-            session.beginTransaction();
-            detallePedido = session.get(DetallePedido.class, id);
-            session.getTransaction().commit();
-        }
-        return detallePedido;
-    }
-
-    public void eliminarDetallePedido(int id) {
-        try (Session session = factory.openSession()) {
-            session.beginTransaction();
-            DetallePedido detallePedido = session.get(DetallePedido.class, id);
-            if (detallePedido != null) {
-                session.delete(detallePedido);
-            }
-            session.getTransaction().commit();
+            return session.createQuery("from DetallePedido where pedido.id = :pedidoId", DetallePedido.class)
+                    .setParameter("pedidoId", pedidoId)
+                    .list();
         }
     }
 
-    public List<DetallePedido> obtenerTodosLosDetallesPedido() {
+    /**
+     * Obtiene todos los detalles de pedidos.
+     *
+     * @return Una lista de todos los objetos DetallePedido.
+     */
+    public List<DetallePedido> obtenerTodosLosDetalles() {
         try (Session session = factory.openSession()) {
             return session.createQuery("from DetallePedido", DetallePedido.class).list();
         }
     }
 
-    public List<DetallePedido> buscarDetallesPedidoPorProducto(int productoId) {
-        try (Session session = factory.openSession()) {
-            return session.createQuery("from DetallePedido where producto.id = :productoId", DetallePedido.class)
-                    .setParameter("productoId", productoId)
-                    .list();
-        }
-    }
-
+    /**
+     * Cierra el SessionFactory.
+     */
     public void cerrar() {
         factory.close();
     }

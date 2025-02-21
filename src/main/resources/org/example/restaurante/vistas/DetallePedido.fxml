@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox alignment="CENTER" spacing="20.0" prefWidth="800" prefHeight="600" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.restaurante.controller.DetallePedidoController">
+    <TableView fx:id="detallePedidoTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="idDetallePedidoColumn" text="ID Detalle Pedido"/>
+            <TableColumn fx:id="pedidoIdColumn" text="ID Pedido"/>
+            <TableColumn fx:id="productoIdColumn" text="Producto ID"/>
+            <TableColumn fx:id="cantidadColumn" text="Cantidad"/>
+            <TableColumn fx:id="precioColumn" text="Precio"/>
+            <TableColumn fx:id="subtotalColumn" text="Subtotal"/>
+        </columns>
+    </TableView>
+    <Button text="Volver a Pedido" fx:id="volverButton" onAction="#volverAPedido"/>
+</VBox>

@@ -1,54 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.restaurante.controller.ProductoController">
-    <GridPane hgap="10" vgap="10" alignment="CENTER">
-        <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <TextField fx:id="nombreField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-        <Label text="Categoría:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-        <TextField fx:id="categoriaField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-        <Label text="Precio:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-        <TextField fx:id="precioField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-        <Label text="Disponibilidad:" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-        <TextField fx:id="disponibilidadField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="org.example.restaurante.controller.ProductoController">
+    <GridPane alignment="CENTER" hgap="10" vgap="10">
+        <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="nombreField" GridPane.columnIndex="2" />
+        <Label text="Categoría:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="categoriaField" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+        <Label text="Precio:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField fx:id="precioField" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+        <Label text="Disponibilidad:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <CheckBox fx:id="disponibilidadField" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+        <columnConstraints>
+            <ColumnConstraints />
+            <ColumnConstraints />
+            <ColumnConstraints />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
     </GridPane>
 
-    <HBox spacing="10.0" alignment="CENTER">
-        <Button text="Agregar" onAction="#agregarProducto"/>
-        <Button text="Actualizar" onAction="#actualizarProducto"/>
-        <Button text="Eliminar" onAction="#eliminarProducto"/>
-        <Button text="Mostrar Todos" onAction="#mostrarTodos"/>
+    <HBox alignment="CENTER" spacing="10.0">
+        <Button onAction="#agregarProducto" text="Agregar" />
+        <Button onAction="#actualizarProducto" text="Actualizar" />
+        <Button onAction="#eliminarProducto" text="Eliminar" />
+        <Button onAction="#mostrarTodos" text="Mostrar Todos" />
     </HBox>
-
-    <VBox.margin>
-        <Insets top="20"/>
-    </VBox.margin>
 
     <TableView fx:id="productoTable" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="idColumn" text="ID"/>
-            <TableColumn fx:id="nombreColumn" text="Nombre"/>
-            <TableColumn fx:id="categoriaColumn" text="Categoría"/>
-            <TableColumn fx:id="precioColumn" text="Precio"/>
-            <TableColumn fx:id="disponibilidadColumn" text="Disponibilidad"/>
+            <TableColumn fx:id="idColumn" text="ID" />
+            <TableColumn fx:id="nombreColumn" text="Nombre" />
+            <TableColumn fx:id="categoriaColumn" text="Categoría" />
+            <TableColumn fx:id="precioColumn" text="Precio" />
+            <TableColumn fx:id="disponibilidadColumn" text="Disponibilidad" />
         </columns>
     </TableView>
 
+    <HBox alignment="CENTER" spacing="10.0">
+        <Label text="Buscar:" />
+        <TextField fx:id="buscarField" />
+        <Button onAction="#buscarProducto" text="Buscar" />
+    </HBox>
+
     <HBox spacing="10.0" alignment="CENTER">
-        <Label text="Buscar:"/>
-        <TextField fx:id="buscarField"/>
-        <Button text="Buscar" onAction="#buscarProducto"/>
+        <Button text="Volver a Principal" onAction="#volverPrincipal"/>
     </HBox>
 
     <VBox.margin>
-        <Insets top="20"/>
+        <Insets top="20" />
     </VBox.margin>
 </VBox>

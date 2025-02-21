@@ -3,15 +3,23 @@ package org.example.restaurante.controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.example.restaurante.HelloApplication;
 import org.example.restaurante.entity.Cliente;
 import org.example.restaurante.manejador.ManejadorCliente;
 
 import java.util.List;
 
+/**
+ * Controlador para gestionar los clientes en la interfaz de usuario.
+ *
+ * @autor oscarruiz-code
+ */
 public class HelloController {
 
     @FXML
@@ -41,6 +49,9 @@ public class HelloController {
     private ManejadorCliente manejadorCliente = new ManejadorCliente();
     private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
 
+    /**
+     * Inicializa la tabla de clientes.
+     */
     @FXML
     public void initialize() {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -51,12 +62,18 @@ public class HelloController {
         cargarDatos();
     }
 
+    /**
+     * Carga los datos de todos los clientes en la tabla.
+     */
     private void cargarDatos() {
         List<Cliente> clientes = manejadorCliente.obtenerTodosLosClientes();
         clienteData.setAll(clientes);
         clienteTable.setItems(clienteData);
     }
 
+    /**
+     * Agrega un nuevo cliente utilizando los datos ingresados en los campos de texto.
+     */
     @FXML
     private void agregarCliente() {
         String nombre = nombreField.getText();
@@ -67,6 +84,9 @@ public class HelloController {
         limpiarCampos();
     }
 
+    /**
+     * Actualiza los datos del cliente seleccionado en la tabla.
+     */
     @FXML
     private void actualizarCliente() {
         Cliente clienteSeleccionado = clienteTable.getSelectionModel().getSelectedItem();
@@ -80,6 +100,9 @@ public class HelloController {
         }
     }
 
+    /**
+     * Elimina el cliente seleccionado en la tabla.
+     */
     @FXML
     private void eliminarCliente() {
         Cliente clienteSeleccionado = clienteTable.getSelectionModel().getSelectedItem();
@@ -89,6 +112,9 @@ public class HelloController {
         }
     }
 
+    /**
+     * Busca clientes por nombre utilizando el texto ingresado en el campo de búsqueda.
+     */
     @FXML
     private void buscarCliente() {
         String nombreBusqueda = buscarField.getText();
@@ -97,11 +123,32 @@ public class HelloController {
         clienteTable.setItems(clienteData);
     }
 
+    /**
+     * Muestra todos los clientes en la tabla.
+     */
     @FXML
     private void mostrarTodos() {
         cargarDatos();
     }
 
+    /**
+     * Vuelve a la vista principal.
+     */
+    @FXML
+    private void volverPrincipal() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/restaurante/vistas/Principal.fxml"));
+            Scene scene = new Scene(loader.load());
+            HelloApplication.primaryStage.setScene(scene);
+            HelloApplication.primaryStage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Limpia los campos de texto.
+     */
     private void limpiarCampos() {
         nombreField.clear();
         direccionField.clear();
