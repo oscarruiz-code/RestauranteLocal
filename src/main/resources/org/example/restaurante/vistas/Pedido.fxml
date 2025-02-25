@@ -43,12 +43,13 @@
 
     <TableView fx:id="pedidoTable" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn fx:id="idColumn" text="ID"/>
+            <TableColumn fx:id="idPedidoColumn" text="ID"/>
             <TableColumn fx:id="clienteColumn" text="Cliente"/>
             <TableColumn fx:id="fechaColumn" text="Fecha"/>
             <TableColumn fx:id="horaColumn" text="Hora"/>
             <TableColumn fx:id="totalColumn" text="Total"/>
             <TableColumn fx:id="estadoColumn" text="Estado"/>
+            <TableColumn fx:id="productoColumn" text="Producto"/>
         </columns>
     </TableView>
 

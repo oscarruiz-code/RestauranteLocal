@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import org.example.restaurante.HelloApplication;
 import org.example.restaurante.entity.DetallePedido;
 import org.example.restaurante.entity.Pedido;
@@ -53,7 +54,7 @@ public class DetallePedidoController {
     public void initialize() {
         idDetallePedidoColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         pedidoIdColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleLongProperty(cellData.getValue().getPedido().getId()).asObject());
-        productoIdColumn.setCellValueFactory(new PropertyValueFactory<>("productoId"));
+        productoIdColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getProductoId()).asObject());
         cantidadColumn.setCellValueFactory(new PropertyValueFactory<>("cantidad"));
         precioColumn.setCellValueFactory(new PropertyValueFactory<>("precio"));
         subtotalColumn.setCellValueFactory(new PropertyValueFactory<>("subtotal"));

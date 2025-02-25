@@ -2,26 +2,22 @@ package org.example.restaurante.entity;
 
 import jakarta.persistence.*;
 
-/**
- * Entidad que representa el detalle de un pedido en la base de datos.
- *
- * @autor oscarruiz-code
- */
 @Entity
-@Table(name = "DetallePedidos")
+@Table(name = "detalle_pedido")
 public class DetallePedido {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_detallePedido")
+    @Column(name = "id")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "pedido_id")
     private Pedido pedido;
 
-    @Column(name = "producto_id")
-    private int productoId;
+    @ManyToOne
+    @JoinColumn(name = "producto_id")
+    private Producto producto;
 
     @Column(name = "cantidad")
     private int cantidad;
@@ -29,25 +25,13 @@ public class DetallePedido {
     @Column(name = "precio")
     private double precio;
 
-    @Column(name = "subtotal")
-    private double subtotal;
-
     public DetallePedido() {}
 
-    /**
-     * Constructor con los detalles de un pedido.
-     *
-     * @param pedido El pedido al que pertenece este detalle.
-     * @param productoId El ID del producto.
-     * @param cantidad La cantidad del producto.
-     * @param precio El precio del producto.
-     */
-    public DetallePedido(Pedido pedido, int productoId, int cantidad, double precio) {
+    public DetallePedido(Pedido pedido, Producto producto, int cantidad, double precio) {
         this.pedido = pedido;
-        this.productoId = productoId;
+        this.producto = producto;
         this.cantidad = cantidad;
         this.precio = precio;
-        this.subtotal = cantidad * precio;
     }
 
     public Long getId() {
@@ -66,12 +50,12 @@ public class DetallePedido {
         this.pedido = pedido;
     }
 
-    public int getProductoId() {
-        return productoId;
+    public Producto getProducto() {
+        return producto;
     }
 
-    public void setProductoId(int productoId) {
-        this.productoId = productoId;
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
 
     public int getCantidad() {
@@ -80,7 +64,6 @@ public class DetallePedido {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
-        this.subtotal = this.cantidad * this.precio; // Recalculamos el subtotal al cambiar la cantidad
     }
 
     public double getPrecio() {
@@ -89,14 +72,13 @@ public class DetallePedido {
 
     public void setPrecio(double precio) {
         this.precio = precio;
-        this.subtotal = this.cantidad * this.precio; // Recalculamos el subtotal al cambiar el precio
     }
 
     public double getSubtotal() {
-        return subtotal;
+        return cantidad * precio;
     }
 
-    public void setSubtotal(double subtotal) {
-        this.subtotal = subtotal;
+    public int getProductoId() {
+        return producto.getId();
     }
 }

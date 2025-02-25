@@ -5,13 +5,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.stage.Stage;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import org.example.restaurante.HelloApplication;
 import org.example.restaurante.entity.Cliente;
 import org.example.restaurante.entity.DetallePedido;
@@ -19,6 +15,7 @@ import org.example.restaurante.entity.Pedido;
 import org.example.restaurante.entity.Producto;
 import org.example.restaurante.manejador.ManejadorCliente;
 import org.example.restaurante.manejador.ManejadorPedido;
+import org.example.restaurante.manejador.ManejadorProducto;
 
 import java.util.List;
 
@@ -51,6 +48,9 @@ public class PedidoController {
     private TableColumn<Pedido, String> estadoColumn;
 
     @FXML
+    private TableColumn<Pedido, String> productoColumn;
+
+    @FXML
     private TextField buscarField;
 
     @FXML
@@ -75,10 +75,14 @@ public class PedidoController {
     private TextField cantidadField;
 
     private ManejadorPedido manejadorPedido = new ManejadorPedido();
+    private ManejadorCliente manejadorCliente = new ManejadorCliente();
+    private ManejadorProducto manejadorProducto = new ManejadorProducto();
     private ObservableList<Pedido> pedidoData = FXCollections.observableArrayList();
+    private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
+    private ObservableList<Producto> productoData = FXCollections.observableArrayList();
 
     /**
-     * Inicializa la tabla de pedidos.
+     * Inicializa la tabla de pedidos y los ComboBox.
      */
     @FXML
     public void initialize() {
@@ -88,8 +92,12 @@ public class PedidoController {
         horaColumn.setCellValueFactory(new PropertyValueFactory<>("hora"));
         totalColumn.setCellValueFactory(new PropertyValueFactory<>("total"));
         estadoColumn.setCellValueFactory(new PropertyValueFactory<>("estado"));
+        productoColumn.setCellValueFactory(new PropertyValueFactory<>("productoNombre"));
+
 
         cargarPedidos();
+        cargarClientes();
+        cargarProductos();
     }
 
     /**
@@ -102,6 +110,87 @@ public class PedidoController {
     }
 
     /**
+     * Carga los datos de todos los clientes en el ComboBox.
+     */
+    private void cargarClientes() {
+        List<Cliente> clientes = manejadorCliente.obtenerTodosLosClientes();
+        clienteData.setAll(clientes);
+        clienteComboBox.setItems(clienteData);
+        clienteComboBox.getItems().add(0, null); // Añadir opción de campo vacío
+    }
+
+    /**
+     * Carga los datos de todos los productos en el ComboBox.
+     */
+    private void cargarProductos() {
+        List<Producto> productos = manejadorProducto.obtenerTodosLosProductos();
+        productoData.setAll(productos);
+        productoComboBox.setItems(productoData);
+        productoComboBox.getItems().add(0, null); // Añadir opción de campo vacío
+    }
+
+    @FXML
+    public void agregarPedido() {
+        Cliente cliente = clienteComboBox.getValue();
+        if (cliente == null && !clienteField.getText().isEmpty()) {
+            // Solicitar dirección y teléfono para el nuevo cliente
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Nuevo Cliente");
+            dialog.setHeaderText("Ingrese la dirección y el teléfono del nuevo cliente separados por una coma.");
+            dialog.setContentText("Dirección,Teléfono:");
+
+            final Cliente finalCliente = cliente;
+            dialog.showAndWait().ifPresent(datos -> {
+                String[] datosCliente = datos.split(",");
+                if (datosCliente.length == 2) {
+                    Cliente nuevoCliente = crearNuevoCliente(datosCliente);
+                    if (nuevoCliente != null) {
+                        agregarPedidoConCliente(nuevoCliente);
+                    }
+                } else {
+                    mostrarAlerta("Error", "Debe ingresar dirección y teléfono separados por comas.");
+                }
+            });
+        } else if (cliente != null) {
+            agregarPedidoConCliente(cliente);
+        } else {
+            mostrarAlerta("Error", "Debe seleccionar un cliente o ingresar el nombre de un nuevo cliente.");
+        }
+    }
+
+    /**
+     * Agrega un nuevo pedido con el cliente proporcionado.
+     *
+     * @param cliente El cliente para el nuevo pedido.
+     */
+    private void agregarPedidoConCliente(Cliente cliente) {
+        String fecha = fechaField.getText();
+        String hora = horaField.getText();
+        String estado = estadoField.getText();
+        Producto producto = productoComboBox.getValue();
+        if (producto == null) {
+            mostrarAlerta("Error", "Debe seleccionar un producto.");
+            return;
+        }
+        int cantidad;
+        try {
+            cantidad = Integer.parseInt(cantidadField.getText());
+        } catch (NumberFormatException e) {
+            mostrarAlerta("Error", "Debe ingresar una cantidad válida.");
+            return;
+        }
+
+        double precio = producto.getPrecio();
+        Pedido nuevoPedido = new Pedido(cliente, fecha, hora, estado);
+        DetallePedido detalle = new DetallePedido(nuevoPedido, producto, cantidad, precio);
+        nuevoPedido.getDetalles().add(detalle);
+        nuevoPedido.calcularTotal();
+
+        manejadorPedido.ingresarPedido(nuevoPedido);
+        cargarPedidos();
+        limpiarCampos();
+    }
+    /**
      * Crea un nuevo cliente si la información ingresada es válida.
      *
      * @param datos Los datos del cliente en formato de cadena.
@@ -112,8 +201,8 @@ public class PedidoController {
             String direccion = datos[0].trim();
             String telefono = datos[1].trim();
             Cliente nuevoCliente = new Cliente(clienteField.getText(), direccion, telefono);
-            ManejadorCliente.ingresarCliente(nuevoCliente);
-            cargarPedidos(); // Refrescar lista de clientes
+            manejadorCliente.ingresarCliente(nuevoCliente);
+            cargarClientes(); // Refrescar lista de clientes
             return nuevoCliente;
         } else {
             mostrarAlerta("Error", "Debe ingresar dirección y teléfono separados por comas.");
@@ -187,7 +276,7 @@ public class PedidoController {
             int cantidad = Integer.parseInt(cantidadField.getText());
             double precio = producto.getPrecio();
 
-            DetallePedido detalle = new DetallePedido(pedidoSeleccionado, producto.getId(), cantidad, precio);
+            DetallePedido detalle = new DetallePedido(pedidoSeleccionado, producto, cantidad, precio);
             pedidoSeleccionado.getDetalles().add(detalle);
             pedidoSeleccionado.calcularTotal();
 

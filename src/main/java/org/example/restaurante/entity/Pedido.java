@@ -121,4 +121,33 @@ public class Pedido {
     public void setDetalles(List<DetallePedido> detalles) {
         this.detalles = detalles;
     }
+
+    /**
+     * Obtiene el nombre del cliente asociado al pedido.
+     *
+     * @return El nombre del cliente.
+     */
+    public String getClienteNombre() {
+        return cliente.getNombre();
+    }
+
+    /**
+     * Obtiene los nombres de los productos asociados al pedido.
+     *
+     * @return Una cadena con los nombres de los productos.
+     */
+    public String getProductoNombre() {
+        if (detalles == null || detalles.isEmpty()) {
+            return "Sin productos";
+        }
+        StringBuilder nombres = new StringBuilder();
+        for (DetallePedido detalle : detalles) {
+            if (nombres.length() > 0) {
+                nombres.append(", ");
+            }
+            nombres.append(detalle.getProducto().getNombre());
+        }
+        return nombres.toString();
+    }
+
 }

@@ -76,9 +76,12 @@ public class PedidoRepository {
      * @return Una lista de objetos Pedido.
      */
     public List<Pedido> obtenerTodosLosPedidos() {
+        List<Pedido> pedidos;
         try (Session session = factory.openSession()) {
-            return session.createQuery("from Pedido", Pedido.class).list();
+            pedidos = session.createQuery("SELECT DISTINCT p FROM Pedido p LEFT JOIN FETCH p.detalles d LEFT JOIN FETCH d.producto", Pedido.class)
+                    .getResultList();
         }
+        return pedidos;
     }
 
     /**
