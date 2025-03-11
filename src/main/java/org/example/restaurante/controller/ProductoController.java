@@ -10,7 +10,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import org.example.restaurante.entity.Producto;
 import org.example.restaurante.manejador.ManejadorProducto;
-
+import org.example.restaurante.reportes.ReportGenerator;
+import javafx.event.ActionEvent;
 import java.util.List;
 
 /**
@@ -39,18 +40,26 @@ public class ProductoController {
     private TableColumn<Producto, Boolean> disponibilidadColumn;
 
     @FXML
+    private TableColumn<Producto, Integer> stockColumn;
+
+    @FXML
     private TextField nombreField;
     @FXML
     private TextField categoriaField;
     @FXML
     private TextField precioField;
     @FXML
+    private TextField stockField;
+    @FXML
     private CheckBox disponibilidadField;
     @FXML
     private TextField buscarField;
+    @FXML
+    private Button btnGenerarReporteProductos;
 
     private ManejadorProducto manejadorProducto = new ManejadorProducto();
     private ObservableList<Producto> productoData = FXCollections.observableArrayList();
+    private ReportGenerator reportGenerator = new ReportGenerator();
 
     /**
      * Inicializa la tabla de productos.
@@ -62,7 +71,7 @@ public class ProductoController {
         categoriaColumn.setCellValueFactory(new PropertyValueFactory<>("categoria"));
         precioColumn.setCellValueFactory(new PropertyValueFactory<>("precio"));
         disponibilidadColumn.setCellValueFactory(new PropertyValueFactory<>("disponibilidad"));
-
+        stockColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         cargarDatos();
     }
 
@@ -75,23 +84,18 @@ public class ProductoController {
         productoTable.setItems(productoData);
     }
 
-    /**
-     * Agrega un nuevo producto utilizando los datos ingresados en los campos de texto.
-     */
     @FXML
     private void agregarProducto() {
         String nombre = nombreField.getText();
         String categoria = categoriaField.getText();
         double precio = Double.parseDouble(precioField.getText());
         boolean disponibilidad = disponibilidadField.isSelected();
-        manejadorProducto.ingresarProducto(nombre, categoria, precio, disponibilidad);
+        Integer stock = Integer.parseInt(stockField.getText()); // Obtener el stock
+        manejadorProducto.ingresarProducto(nombre, categoria, precio, disponibilidad, stock);
         cargarDatos();
         limpiarCampos();
     }
 
-    /**
-     * Actualiza los datos del producto seleccionado en la tabla.
-     */
     @FXML
     private void actualizarProducto() {
         Producto productoSeleccionado = productoTable.getSelectionModel().getSelectedItem();
@@ -100,7 +104,8 @@ public class ProductoController {
             String categoria = categoriaField.getText();
             double precio = Double.parseDouble(precioField.getText());
             boolean disponibilidad = disponibilidadField.isSelected();
-            manejadorProducto.actualizarProducto(productoSeleccionado.getId(), nombre, categoria, precio, disponibilidad);
+            Integer stock = Integer.parseInt(stockField.getText()); // Obtener el stock
+            manejadorProducto.actualizarProducto(productoSeleccionado.getId(), nombre, categoria, precio, disponibilidad, stock);
             cargarDatos();
             limpiarCampos();
         }
@@ -145,6 +150,7 @@ public class ProductoController {
         categoriaField.clear();
         precioField.clear();
         disponibilidadField.setSelected(false);
+        stockField.clear(); // Limpiar el campo de stock
         buscarField.clear();
     }
 
@@ -162,4 +168,14 @@ public class ProductoController {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    void generarReporteProductos(ActionEvent event) {
+        // Obtener la lista de productos con stock bajo desde Hibernate
+        List<Producto> productos = manejadorProducto.obtenerProductosBajoStock();
+
+        // Generar el informe
+        reportGenerator.generateProductosBajoStockReport(productos);
+    }
+
 }

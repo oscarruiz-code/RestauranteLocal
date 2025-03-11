@@ -12,7 +12,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.example.restaurante.HelloApplication;
 import org.example.restaurante.entity.Cliente;
 import org.example.restaurante.manejador.ManejadorCliente;
-
+import org.example.restaurante.reportes.ReportGenerator;
+import javafx.event.ActionEvent;
+import java.awt.*;
 import java.util.List;
 
 /**
@@ -45,6 +47,10 @@ public class HelloController {
     private TextField telefonoField;
     @FXML
     private TextField buscarField;
+    @FXML
+    private Button btnGenerarReporteClientes;
+
+    private ReportGenerator reportGenerator = new ReportGenerator();
 
     private ManejadorCliente manejadorCliente = new ManejadorCliente();
     private ObservableList<Cliente> clienteData = FXCollections.observableArrayList();
@@ -70,6 +76,16 @@ public class HelloController {
         clienteData.setAll(clientes);
         clienteTable.setItems(clienteData);
     }
+
+    @FXML
+    private void generarReporteClientes(ActionEvent event) {
+        // Obtener la lista de clientes desde Hibernate
+        List<Cliente> clientes = manejadorCliente.obtenerTodosLosClientes();
+
+        // Generar el informe
+        reportGenerator.generateClientesReport(clientes);
+    }
+
 
     /**
      * Agrega un nuevo cliente utilizando los datos ingresados en los campos de texto.
@@ -155,4 +171,5 @@ public class HelloController {
         telefonoField.clear();
         buscarField.clear();
     }
+
 }

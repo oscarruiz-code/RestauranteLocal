@@ -98,6 +98,12 @@ public class PedidoRepository {
         }
     }
 
+    public List<Pedido> obtenerPedidosEnPreparacion() {
+        try (Session session = factory.openSession()) {
+            return session.createQuery("from Pedido where estado = 'En preparación'", Pedido.class).list();
+        }
+    }
+
     /**
      * Cierra el SessionFactory.
      */

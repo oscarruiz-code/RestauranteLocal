@@ -60,6 +60,8 @@
     </HBox>
 
     <HBox spacing="10.0" alignment="CENTER">
+        <Button text="Generar Informe de Pedidos" onAction="#generarReportePedidos"/>
+        <Button text="Generar Ticket de Pedido" onAction="#generarTicket"/>
         <Button text="Ver Pedido Completo" onAction="#verPedidoCompleto"/>
         <Button text="Volver a Principal" onAction="#volverPrincipal"/>
     </HBox>

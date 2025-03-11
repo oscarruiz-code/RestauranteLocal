@@ -16,6 +16,8 @@ import org.example.restaurante.entity.Producto;
 import org.example.restaurante.manejador.ManejadorCliente;
 import org.example.restaurante.manejador.ManejadorPedido;
 import org.example.restaurante.manejador.ManejadorProducto;
+import javafx.event.ActionEvent;
+import org.example.restaurante.reportes.ReportGenerator;
 
 import java.util.List;
 
@@ -74,6 +76,13 @@ public class PedidoController {
     @FXML
     private TextField cantidadField;
 
+    @FXML
+    private Button btnGenerarReportePedidos;
+
+    @FXML
+    private Button btnGenerarTicket;
+
+    private ReportGenerator reportGenerator = new ReportGenerator();
     private ManejadorPedido manejadorPedido = new ManejadorPedido();
     private ManejadorCliente manejadorCliente = new ManejadorCliente();
     private ManejadorProducto manejadorProducto = new ManejadorProducto();
@@ -336,6 +345,28 @@ public class PedidoController {
             stage.setScene(scene);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void generarReportePedidos(ActionEvent event) {
+        // Obtener la lista de pedidos en preparación desde Hibernate
+        List<Pedido> pedidos = manejadorPedido.obtenerPedidosEnPreparacion();
+
+        // Generar el informe
+        reportGenerator.generatePedidosPreparacionReport(pedidos);
+    }
+
+    @FXML
+    void generarTicket(ActionEvent event) {
+        // Obtener el pedido seleccionado
+        Pedido pedidoSeleccionado = pedidoTable.getSelectionModel().getSelectedItem();
+
+        if (pedidoSeleccionado != null) {
+            // Generar el ticket
+            reportGenerator.generateTicketPedidoReport(pedidoSeleccionado);
+        } else {
+            mostrarAlerta("Error", "Seleccione un pedido para generar el ticket.");
         }
     }
 }

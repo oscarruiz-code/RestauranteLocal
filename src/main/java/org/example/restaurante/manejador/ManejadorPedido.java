@@ -81,6 +81,10 @@ public class ManejadorPedido {
         return pedidoRepository.buscarPedidosPorCliente(nombreCliente);
     }
 
+    public List<Pedido> obtenerPedidosEnPreparacion() {
+        return pedidoRepository.obtenerPedidosEnPreparacion();
+    }
+
     /**
      * Cierra el repositorio de pedidos.
      */

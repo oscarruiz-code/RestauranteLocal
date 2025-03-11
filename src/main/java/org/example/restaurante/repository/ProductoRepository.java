@@ -95,6 +95,12 @@ public class ProductoRepository {
         }
     }
 
+    public List<Producto> obtenerProductosBajoStock() {
+        try (Session session = factory.openSession()) {
+            return session.createQuery("from Producto where disponibilidad = true AND stock < 5", Producto.class).list();
+        }
+    }
+
     /**
      * Cierra el SessionFactory.
      */

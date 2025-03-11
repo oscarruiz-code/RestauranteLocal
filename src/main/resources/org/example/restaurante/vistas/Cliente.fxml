@@ -46,6 +46,7 @@
     </HBox>
 
     <HBox spacing="10.0" alignment="CENTER">
+        <Button text="Generar Informe de Clientes" onAction="#generarReporteClientes"/>
         <Button text="Volver a Principal" onAction="#volverPrincipal"/>
     </HBox>
 

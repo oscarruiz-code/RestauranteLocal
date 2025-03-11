@@ -28,6 +28,9 @@ public class Producto {
     @Column(name = "disponibilidad")
     private boolean disponibilidad;
 
+    @Column(name = "stock") // Nuevo campo
+    private Integer stock;
+
     /**
      * Constructor con los detalles del producto.
      *
@@ -36,11 +39,12 @@ public class Producto {
      * @param precio El precio del producto.
      * @param disponibilidad La disponibilidad del producto.
      */
-    public Producto(String nombre, String categoria, double precio, boolean disponibilidad) {
+    public Producto(String nombre, String categoria, double precio, boolean disponibilidad,Integer stock) {
         this.nombre = nombre;
         this.categoria = categoria;
         this.precio = precio;
         this.disponibilidad = disponibilidad;
+        this.stock = stock;
     }
 
     public Producto() {}
@@ -83,6 +87,14 @@ public class Producto {
 
     public void setDisponibilidad(boolean disponibilidad) {
         this.disponibilidad = disponibilidad;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     @Override

@@ -14,12 +14,15 @@
         <TextField fx:id="precioField" GridPane.columnIndex="2" GridPane.rowIndex="2" />
         <Label text="Disponibilidad:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
         <CheckBox fx:id="disponibilidadField" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+        <Label text="Stock:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <TextField fx:id="stockField" GridPane.columnIndex="2" GridPane.rowIndex="4" />
         <columnConstraints>
             <ColumnConstraints />
             <ColumnConstraints />
             <ColumnConstraints />
         </columnConstraints>
         <rowConstraints>
+            <RowConstraints />
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
@@ -41,6 +44,7 @@
             <TableColumn fx:id="categoriaColumn" text="Categoría" />
             <TableColumn fx:id="precioColumn" text="Precio" />
             <TableColumn fx:id="disponibilidadColumn" text="Disponibilidad" />
+            <TableColumn fx:id="stockColumn" text="Stock" />
         </columns>
     </TableView>
 
@@ -51,6 +55,7 @@
     </HBox>
 
     <HBox spacing="10.0" alignment="CENTER">
+        <Button text="Generar Informe de Productos" onAction="#generarReporteProductos"/>
         <Button text="Volver a Principal" onAction="#volverPrincipal"/>
     </HBox>
 
